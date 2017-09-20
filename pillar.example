@@ -1,19 +1,35 @@
-# nginx:
-   install_from_source: True
-   use_upstart: True
-   use_sysvinit: False
-   user_auth_enabled: True
-   with_luajit: False
-   with_openresty: True
-   repo_version: development  # Must be using ppa install by setting `repo_source = ppa`
-   set_real_ips: # NOTE: to use this, nginx must have http_realip module enabled
-     from_ips:
-       - 10.10.10.0/24
-     real_ip_header: X-Forwarded-For
-   modules:
-     headers-more:
-       source: http://github.com/agentzh/headers-more-nginx-module/tarball/v0.21
-       source_hash: sha1=dbf914cbf3f7b6cb7e033fa7b7c49e2f8879113b
+nginx:
+  install_from_source: True
+  use_upstart: True
+  use_sysvinit: False
+  user_auth_enabled: True
+  with_luajit: False
+  with_openresty: True
+  repo_version: development  # Must be using ppa install by setting `repo_source = ppa`
+  set_real_ips: # NOTE: to use this, nginx must have http_realip module enabled
+    from_ips:
+      - 10.10.10.0/24
+    real_ip_header: X-Forwarded-For
+  modules:
+    headers-more:
+      source: http://github.com/agentzh/headers-more-nginx-module/tarball/v0.21
+      source_hash: sha1=dbf914cbf3f7b6cb7e033fa7b7c49e2f8879113b
+  access_log:
+    location: /var/log/nginx/access.log
+    format: |
+      '{'
+        '"timestamp": "$time_local", '
+        '"remote_addr": "$remote_addr", '
+        '"method": "$request_method", '
+        '"host": "$host", '
+        '"path": "$request_uri", '
+        '"query": "$query_string", '
+        '"status": "$status", '
+        '"body_bytes_sent": "$body_bytes_sent", '
+        '"request_time": "$request_time", '
+        '"http_referrer": "$http_referer", '
+        '"http_user_agent": "$http_user_agent" '
+      '}'
 
 # ========
 # nginx.ng
